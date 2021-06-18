@@ -17,6 +17,8 @@
     "update": "ncu -u"
   },
   "peerDependencies": {
+    "effector": "^21.8.12",
+    "effector-react": "^21.3.2",
     "react": "^16.13.1",
     "react-dom": "^16.13.1"
   },
