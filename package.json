@@ -16,6 +16,9 @@
     "story": "start-storybook -p 6006",
     "update": "ncu -u"
   },
+  "dependencies": {
+    "history": "^5.0.0"
+  },
   "peerDependencies": {
     "effector": "^21.8.12",
     "effector-react": "^21.3.2",
