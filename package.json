@@ -17,7 +17,8 @@
     "update": "ncu -u"
   },
   "dependencies": {
-    "history": "^5.0.0"
+    "history": "^5.0.0",
+    "path-to-regexp": "^6.2.0"
   },
   "peerDependencies": {
     "effector": "^21.8.12",
