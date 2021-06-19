@@ -13,10 +13,6 @@ export type Match<
   isExact: boolean;
 };
 
-export type RouteOptions = {
-  exact?: boolean;
-};
-
 export type HistoryMethod = "push" | "replace";
 
 export type NavigateOptions<

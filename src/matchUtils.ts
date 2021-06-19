@@ -1,20 +1,34 @@
 import type { Location } from "history";
+import { compile, match } from "path-to-regexp";
 import type {
   Match,
   NavigateFxOptions,
   NavigateOptions,
   PathParams,
-  RouteOptions,
 } from "./types";
 
-export const getPathParams = <
+export const matchPath = <
   PathParamKeys extends Record<string, string> = Record<never, string>
 >(
-  pathname: string,
+  location: Location,
   path: string
-): PathParams<PathParamKeys> => {
-  // TODO: Implement params.
-  return {} as PathParams<PathParamKeys>;
+): Match<PathParamKeys> | null => {
+  const m = match<PathParams<PathParamKeys>>(path, { end: false })(
+    location.pathname
+  );
+
+  if (!m) {
+    return null;
+  }
+
+  const { path: url, params } = m;
+
+  return {
+    params,
+    search: location.search,
+    hash: location.hash,
+    isExact: url === location.pathname,
+  };
 };
 
 export const getPathname = <
@@ -23,8 +37,7 @@ export const getPathname = <
   path: string,
   params: PathParams<PathParamKeys>
 ): string => {
-  // TODO: Implement params.
-  return path;
+  return compile(path)(params);
 };
 
 export const getNavigateFxOptions = <
@@ -49,45 +62,9 @@ export const getNavigateFxOptions = <
       options.hash === true ? location.hash : options.hash;
   }
 
-  const currentParams = getPathParams(location.pathname, path);
+  const currentParams = matchPath<PathParamKeys>(location, path)?.params || {};
   const params = { ...currentParams, ...options.params };
   navigateFxOptions.pathname = getPathname(path, params);
 
   return navigateFxOptions;
-};
-
-export const getHref = <
-  PathParamKeys extends Record<string, string> = Record<never, string>
->(
-  location: Location,
-  path: string,
-  options: NavigateOptions<PathParamKeys> = {}
-) => {
-  const navigateFxOptions = getNavigateFxOptions(location, path, options);
-
-  // TODO: Implement params.
-  return path;
-};
-
-export const matchPath = <
-  PathParamKeys extends Record<string, string> = Record<never, string>
->(
-  location: Location,
-  path: string,
-  options: RouteOptions = {}
-): Match<PathParamKeys> | null => {
-  const isExact = location.pathname === path;
-
-  const isMatch = options?.exact ? isExact : location.pathname.startsWith(path);
-
-  if (isMatch) {
-    return {
-      params: getPathParams<PathParamKeys>(location.pathname, path),
-      search: location.search,
-      hash: location.hash,
-      isExact,
-    };
-  }
-
-  return null;
 };

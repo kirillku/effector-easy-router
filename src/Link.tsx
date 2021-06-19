@@ -1,8 +1,7 @@
 import { useStore } from "effector-react";
 import * as React from "react";
 import type { Route } from "./createRoute";
-import { $location } from "./location";
-import { getHref, getNavigateFxOptions } from "./matchUtils";
+import { $location, getHref } from "./history";
 import type { NavigateOptions } from "./types";
 
 const isModifiedEvent = (event: React.MouseEvent): boolean =>

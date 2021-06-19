@@ -5,7 +5,6 @@ export type { LinkProps } from "./Link";
 export type {
   PathParams,
   Match,
-  RouteOptions,
   HistoryMethod,
   NavigateOptions,
 } from "./types";

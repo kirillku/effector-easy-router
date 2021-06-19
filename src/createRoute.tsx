@@ -2,13 +2,14 @@ import * as React from "react";
 import { combine, createEvent, createStore, guard, sample } from "effector";
 import type { Store, Event } from "effector";
 import { useStore } from "effector-react";
-import { $location, navigateFx } from "./location";
+import { $location, navigateFx } from "./history";
 import { getNavigateFxOptions, matchPath } from "./matchUtils";
-import type { Match, NavigateOptions, RouteOptions } from "./types";
+import type { Match, NavigateOptions } from "./types";
 
 export type RouteProps<
   PathParamKeys extends Record<string, string> = Record<never, string>
 > = {
+  exact?: boolean;
   children?:
     | React.ReactNode
     | ((match: Match<PathParamKeys>) => React.ReactNode);
@@ -29,11 +30,10 @@ export type Route<
 export const createRoute = <
   PathParamKeys extends Record<string, string> = Record<never, string>
 >(
-  path: string,
-  options?: RouteOptions
+  path: string
 ) => {
   const $match = $location.map((location) =>
-    matchPath<PathParamKeys>(location, path, options)
+    matchPath<PathParamKeys>(location, path)
   );
 
   const $hasMatch = $match.map((match) => Boolean(match));
@@ -69,10 +69,14 @@ export const createRoute = <
   });
 
   const Route = ({
+    exact,
     children,
   }: RouteProps<PathParamKeys>): React.ReactElement | null => {
     const match = useStore($match);
-    if (!match) return null;
+
+    if (!match || (exact && !match.isExact)) {
+      return null;
+    }
 
     return typeof children === "function" ? children(match) : children;
   };

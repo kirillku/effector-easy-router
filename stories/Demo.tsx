@@ -1,11 +1,17 @@
-import { createEffect, forward, restore } from "effector";
+import { combine, createEffect, forward, restore } from "effector";
 import { useList, useStore } from "effector-react";
 import * as React from "react";
 import { createRoute, Link } from "../src";
 
-const HomeRoute = createRoute("/", { exact: true });
+const HomeRoute = createRoute("/");
 const AboutRoute = createRoute("/about");
 const UsersRoute = createRoute("/users");
+const UserRoute = createRoute<{ userSlug: string }>(
+  `${UsersRoute.path}/:userSlug`
+);
+
+UsersRoute.match.watch((a) => console.log("Users", a));
+UserRoute.match.watch((a) => console.log("User", a));
 
 const USERS = [
   { id: "1", slug: "boris", name: "Boris" },
@@ -19,6 +25,13 @@ const $users = restore(loadUsersFx.doneData, []);
 
 forward({ from: UsersRoute.open, to: loadUsersFx });
 
+const $selectedUser = combine(
+  $users,
+  UserRoute.match,
+  (users, match) =>
+    (match && users.find((user) => user.slug === match.params.userSlug)) || null
+);
+
 const styles = {
   main: {
     fontFamily: "Helvetica",
@@ -31,8 +44,26 @@ const styles = {
   },
 };
 
+const UserProfile: React.FC = () => {
+  const user = useStore($selectedUser);
+  return (
+    user && (
+      <img
+        src={`https://loremflickr.com/320/240?lock=${user.id}`}
+        alt={user.name}
+      />
+    )
+  );
+};
+
 const Users: React.FC = () => {
-  const userList = useList($users, (user) => <li>{user.name}</li>);
+  const userList = useList($users, (user) => (
+    <li>
+      <Link to={UserRoute} params={{ userSlug: user.slug }}>
+        {user.name}
+      </Link>
+    </li>
+  ));
   const isLoading = useStore(loadUsersFx.pending);
 
   if (isLoading) {
@@ -43,6 +74,9 @@ const Users: React.FC = () => {
     <>
       <h2>List of users</h2>
       <ul>{userList}</ul>
+      <UserRoute>
+        <UserProfile />
+      </UserRoute>
     </>
   );
 };
@@ -58,7 +92,7 @@ const Demo: React.FC = () => {
       </nav>
       <hr />
       <section>
-        <HomeRoute>
+        <HomeRoute exact>
           <h2>Welcome to demo</h2>
         </HomeRoute>
         <AboutRoute>
