@@ -10,15 +10,15 @@ addParameters({
   options: {
     showPanel: true,
     panelPosition: "right",
-    theme: themes.dark
-  }
+    theme: themes.dark,
+  },
 });
 
 // Plugins
 
 configureActions({
   depth: 20,
-  limit: 5
+  limit: 5,
 });
 
 addDecorator(withKnobs);
