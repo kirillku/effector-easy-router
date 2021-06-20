@@ -8,6 +8,12 @@ const changeLocation = createEvent<Location>();
 
 export const $location = restore(changeLocation, history.location);
 
+export const $pathname = $location.map((location) => location.pathname);
+
+export const $search = $location.map((location) => location.search);
+
+export const $hash = $location.map((location) => location.hash);
+
 history.listen(({ location }) => changeLocation(location));
 
 export const navigateFx = createEffect(
@@ -25,6 +31,5 @@ export const getHref = <
 ) => {
   const navigateFxOptions = getNavigateFxOptions(location, path, options);
 
-  // TODO: Implement params.
   return history.createHref(navigateFxOptions);
 };
