@@ -90,3 +90,23 @@ export const createRoute = <
 
   return Route;
 };
+
+export type CurrentRoute = {
+  path: null;
+  navigate: Event<NavigateOptions<never>>;
+};
+
+const navigateToCurrentRoute = createEvent<NavigateOptions<never>>();
+
+sample({
+  clock: navigateToCurrentRoute,
+  source: $location,
+  fn: (location, options) =>
+    getNavigateFxOptions(location, null, options as NavigateOptions<never>),
+  target: navigateFx,
+});
+
+export const CurrentRoute: CurrentRoute = {
+  path: null,
+  navigate: navigateToCurrentRoute,
+};

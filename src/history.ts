@@ -26,7 +26,7 @@ export const getHref = <
   PathParamKeys extends Record<string, string> = Record<never, string>
 >(
   location: Location,
-  path: string,
+  path: string | null,
   options: NavigateOptions<PathParamKeys> = {}
 ) => {
   const navigateFxOptions = getNavigateFxOptions(location, path, options);

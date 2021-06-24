@@ -1,6 +1,6 @@
 import { useStore } from "effector-react";
 import * as React from "react";
-import type { Route } from "./createRoute";
+import type { Route, CurrentRoute } from "./createRoute";
 import { $location, getHref } from "./history";
 import type { NavigateOptions } from "./types";
 
@@ -22,7 +22,7 @@ export interface LinkProps<
 >
   extends Omit<React.AnchorHTMLAttributes<HTMLAnchorElement>, "href">,
     NavigateOptions<PathParamKeys> {
-  to: Route<PathParamKeys>;
+  to: Route<PathParamKeys> | CurrentRoute;
 }
 
 const LinkInner = <

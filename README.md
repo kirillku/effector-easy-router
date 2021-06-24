@@ -76,8 +76,6 @@ const App = () => {
 - Url manipulations are fully abstracted out, you only need to set path when creating a route.
 - No global routes config, each route is independent from other routes.
 
-## Route
-
 TODO:
 
 - [ ] Move search and hash to separate units

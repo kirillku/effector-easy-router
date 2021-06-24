@@ -40,7 +40,7 @@ export const getNavigateFxOptions = <
   PathParamKeys extends Record<string, string> = Record<never, string>
 >(
   location: Location,
-  path: string,
+  path: string | null,
   options: NavigateOptions<PathParamKeys> = {}
 ): NavigateFxOptions => {
   const navigateFxOptions: NavigateFxOptions = {};
@@ -58,10 +58,14 @@ export const getNavigateFxOptions = <
       options.hash === true ? location.hash : options.hash;
   }
 
-  const currentParams =
-    matchPath<PathParamKeys>(location.pathname, path)?.params || {};
-  const params = { ...currentParams, ...options.params };
-  navigateFxOptions.pathname = getPathname(path, params);
+  if (path) {
+    const currentParams =
+      matchPath<PathParamKeys>(location.pathname, path)?.params || {};
+    const params = { ...currentParams, ...options.params };
+    navigateFxOptions.pathname = getPathname(path, params);
+  } else {
+    navigateFxOptions.pathname = location.pathname;
+  }
 
   return navigateFxOptions;
 };
