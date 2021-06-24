@@ -2,7 +2,7 @@ import * as React from "react";
 import { combine, createEvent, createStore, guard, sample } from "effector";
 import type { Store, Event } from "effector";
 import { useStore } from "effector-react";
-import { $location, navigateFx } from "./history";
+import { $location, $pathname, navigateFx } from "./history";
 import { getNavigateFxOptions, matchPath } from "./matchUtils";
 import type { Match, NavigateOptions } from "./types";
 
@@ -32,8 +32,8 @@ export const createRoute = <
 >(
   path: string
 ) => {
-  const $match = $location.map((location) =>
-    matchPath<PathParamKeys>(location, path)
+  const $match = $pathname.map((pathname) =>
+    matchPath<PathParamKeys>(pathname, path)
   );
 
   const $hasMatch = $match.map((match) => Boolean(match));

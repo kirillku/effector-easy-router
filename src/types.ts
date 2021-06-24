@@ -8,8 +8,6 @@ export type Match<
   PathParamKeys extends Record<string, string> = Record<never, string>
 > = {
   params: PathParams<PathParamKeys>;
-  search: string;
-  hash: string;
   isExact: boolean;
 };
 

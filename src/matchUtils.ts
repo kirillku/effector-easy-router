@@ -10,12 +10,10 @@ import type {
 export const matchPath = <
   PathParamKeys extends Record<string, string> = Record<never, string>
 >(
-  location: Location,
+  pathname: string,
   path: string
 ): Match<PathParamKeys> | null => {
-  const m = match<PathParams<PathParamKeys>>(path, { end: false })(
-    location.pathname
-  );
+  const m = match<PathParams<PathParamKeys>>(path, { end: false })(pathname);
 
   if (!m) {
     return null;
@@ -25,9 +23,7 @@ export const matchPath = <
 
   return {
     params,
-    search: location.search,
-    hash: location.hash,
-    isExact: url === location.pathname,
+    isExact: url === pathname,
   };
 };
 
@@ -62,7 +58,8 @@ export const getNavigateFxOptions = <
       options.hash === true ? location.hash : options.hash;
   }
 
-  const currentParams = matchPath<PathParamKeys>(location, path)?.params || {};
+  const currentParams =
+    matchPath<PathParamKeys>(location.pathname, path)?.params || {};
   const params = { ...currentParams, ...options.params };
   navigateFxOptions.pathname = getPathname(path, params);
 
