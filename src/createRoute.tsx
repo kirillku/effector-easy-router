@@ -6,18 +6,14 @@ import { $location, $pathname, navigateFx } from "./history";
 import { getNavigateFxOptions, matchPath } from "./matchUtils";
 import type { Match, NavigateOptions } from "./types";
 
-export type RouteProps<
-  PathParamKeys extends Record<string, string> = Record<never, string>
-> = {
+export type RouteProps<PathParamKeys extends string = never> = {
   exact?: boolean;
   children?:
     | React.ReactNode
     | ((match: Match<PathParamKeys>) => React.ReactNode);
 };
 
-export type Route<
-  PathParamKeys extends Record<string, string> = Record<never, string>
-> = {
+export type Route<PathParamKeys extends string = never> = {
   (props: RouteProps<PathParamKeys>): React.ReactElement | null;
   path: string;
   match: Store<Match<PathParamKeys> | null>;
@@ -27,9 +23,7 @@ export type Route<
   navigate: Event<void | NavigateOptions<PathParamKeys>>;
 };
 
-export const createRoute = <
-  PathParamKeys extends Record<string, string> = Record<never, string>
->(
+export const createRoute = <PathParamKeys extends string = never>(
   path: string
 ) => {
   const $match = $pathname.map((pathname) =>

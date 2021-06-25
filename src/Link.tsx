@@ -17,17 +17,13 @@ const shouldNavigate = (event: React.MouseEvent, target?: string): boolean =>
   // Ignore clicks with modifier keys.
   !isModifiedEvent(event);
 
-export interface LinkProps<
-  PathParamKeys extends Record<string, string> = Record<never, string>
->
+export interface LinkProps<PathParamKeys extends string = never>
   extends Omit<React.AnchorHTMLAttributes<HTMLAnchorElement>, "href">,
     NavigateOptions<PathParamKeys> {
   to: Route<PathParamKeys> | CurrentRoute;
 }
 
-const LinkInner = <
-  PathParamKeys extends Record<string, string> = Record<never, string>
->(
+const LinkInner = <PathParamKeys extends string = never>(
   {
     to: Route,
     params,
@@ -55,6 +51,7 @@ const LinkInner = <
 
     if (shouldNavigate(event, props.target)) {
       event.preventDefault();
+      // @ts-ignore https://github.com/kirillku/effector-easy-router/issues/1
       Route.navigate(navigateOptions);
     }
   };
@@ -63,7 +60,7 @@ const LinkInner = <
 };
 
 export const Link = React.forwardRef(LinkInner) as <
-  PathParamKeys extends Record<string, string> = Record<never, string>
+  PathParamKeys extends string = never
 >(
   props: LinkProps<PathParamKeys> & { ref?: React.Ref<HTMLAnchorElement> }
 ) => React.ReactElement;

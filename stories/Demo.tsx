@@ -6,9 +6,7 @@ import { createRoute, Link } from "../src";
 const HomeRoute = createRoute("/");
 const AboutRoute = createRoute("/about");
 const UsersRoute = createRoute("/users");
-const UserRoute = createRoute<{ userSlug: string }>(
-  `${UsersRoute.path}/:userSlug`
-);
+const UserRoute = createRoute<"userSlug">(`${UsersRoute.path}/:userSlug`);
 
 UsersRoute.match.watch((a) => console.log("Users", a));
 UserRoute.match.watch((a) => console.log("User", a));

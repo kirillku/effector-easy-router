@@ -7,9 +7,7 @@ import type {
   PathParams,
 } from "./types";
 
-export const matchPath = <
-  PathParamKeys extends Record<string, string> = Record<never, string>
->(
+export const matchPath = <PathParamKeys extends string = never>(
   pathname: string,
   path: string
 ): Match<PathParamKeys> | null => {
@@ -27,18 +25,14 @@ export const matchPath = <
   };
 };
 
-export const getPathname = <
-  PathParamKeys extends Record<string, string> = Record<never, string>
->(
+export const getPathname = <PathParamKeys extends string = never>(
   path: string,
   params: PathParams<PathParamKeys>
 ): string => {
   return compile(path)(params);
 };
 
-export const getNavigateFxOptions = <
-  PathParamKeys extends Record<string, string> = Record<never, string>
->(
+export const getNavigateFxOptions = <PathParamKeys extends string = never>(
   location: Location,
   path: string | null,
   options: NavigateOptions<PathParamKeys> = {}

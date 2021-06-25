@@ -22,9 +22,7 @@ export const navigateFx = createEffect(
   }
 );
 
-export const getHref = <
-  PathParamKeys extends Record<string, string> = Record<never, string>
->(
+export const getHref = <PathParamKeys extends string = never>(
   location: Location,
   path: string | null,
   options: NavigateOptions<PathParamKeys> = {}
