@@ -1,6 +1,6 @@
-# 🐣 Easy Router for Effector with React bindings
+# `effector-easy-router`
 
-A router for [`effector`](https://effector.dev/) inspired by [`react-router-dom`](https://reactrouter.com/web) and [`Gate`](https://effector.dev/docs/api/effector-react/gate).
+A router for [`effector`](https://effector.dev/) inspired by [`react-router-dom`](https://reactrouter.com/web) and [effector gates](https://effector.dev/docs/api/effector-react/gate). Routes are independent from each other and not rely on React tree. Url manipulations are fully abstracted out, you only need to set path when creating a route.
 
 ```tsx
 const HomeRoute = createRoute("/");
@@ -70,11 +70,6 @@ const App = () => {
   );
 };
 ```
-
-## Features
-
-- Url manipulations are fully abstracted out, you only need to set path when creating a route.
-- No global routes config, each route is independent from other routes.
 
 TODO:
 
