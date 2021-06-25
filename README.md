@@ -78,7 +78,5 @@ const App = () => {
 
 TODO:
 
-- [ ] Move search and hash to separate units
-- [ ] Add `Switch`
 - [ ] Add `NavLink`
 - [ ] Add `Prompt`

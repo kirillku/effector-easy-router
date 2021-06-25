@@ -1,7 +1,7 @@
 import { combine, createEffect, forward, restore } from "effector";
 import { useList, useStore } from "effector-react";
 import * as React from "react";
-import { createRoute, Link } from "../src";
+import { createRoute, Link, Switch } from "../src";
 
 const HomeRoute = createRoute("/");
 const AboutRoute = createRoute("/about");
@@ -90,15 +90,17 @@ const Demo: React.FC = () => {
       </nav>
       <hr />
       <section>
-        <HomeRoute exact>
-          <h2>Welcome to demo</h2>
-        </HomeRoute>
-        <AboutRoute>
-          <h2>Something here</h2>
-        </AboutRoute>
-        <UsersRoute>
-          <Users />
-        </UsersRoute>
+        <Switch>
+          <HomeRoute exact>
+            <h2>Welcome to demo</h2>
+          </HomeRoute>
+          <AboutRoute>
+            <h2>Something here</h2>
+          </AboutRoute>
+          <UsersRoute>
+            <Users />
+          </UsersRoute>
+        </Switch>
       </section>
     </main>
   );
