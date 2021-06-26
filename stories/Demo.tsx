@@ -79,6 +79,13 @@ const Users: React.FC = () => {
   );
 };
 
+const NotFoundPage: React.FC = () => (
+  <>
+    <h2>404</h2>
+    <p>Page not found</p>
+  </>
+);
+
 const Demo: React.FC = () => {
   return (
     <main style={styles.main}>
@@ -95,11 +102,12 @@ const Demo: React.FC = () => {
             <h2>Welcome to demo</h2>
           </HomeRoute>
           <AboutRoute>
-            <h2>Something here</h2>
+            <h2>About</h2>
           </AboutRoute>
           <UsersRoute>
             <Users />
           </UsersRoute>
+          <NotFoundPage />
         </Switch>
       </section>
     </main>
