@@ -9,11 +9,12 @@ export interface RedirectProps<PathParamKeys extends string = never>
 
 export const Redirect = <PathParamKeys extends string = never>({
   to: Route,
+  method = "replace",
   ...options
 }: RedirectProps<PathParamKeys>): null => {
   React.useEffect(() => {
     // @ts-ignore https://github.com/kirillku/effector-easy-router/issues/1
-    Route.navigate(options);
+    Route.navigate({ method, ...options });
   }, []);
 
   return null;
