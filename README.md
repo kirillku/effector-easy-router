@@ -198,8 +198,3 @@ A store with current `search`.
 A store with curernt `hash`
 
 ###
-
-TODO:
-
-- [ ] Add `NavLink`
-- [ ] Add `Prompt`
