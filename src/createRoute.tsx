@@ -1,5 +1,5 @@
 import * as React from "react";
-import { combine, createEvent, createStore, guard, sample } from "effector";
+import { createEvent, createStore, sample, split } from "effector";
 import type { Store, Event } from "effector";
 import { useStore } from "effector-react";
 import { $location, $pathname, navigateFx } from "./history";
@@ -30,18 +30,13 @@ export const createRoute = <PathParamKeys extends string = never>(
     matchPath<PathParamKeys>(pathname, path)
   );
 
-  const $hasMatch = $match.map((match) => Boolean(match));
+  const open = createEvent<Match<PathParamKeys>>();
+  const close = createEvent<null>();
 
-  const open = guard({
-    clock: $hasMatch.updates,
+  split<Match<PathParamKeys> | null, "open" | "close">({
     source: $match,
-    filter: (_match, hasMatch) => hasMatch,
-  });
-
-  const close = guard({
-    clock: $hasMatch.updates,
-    source: $match,
-    filter: (_match, hasMatch) => !hasMatch,
+    match: (match) => (match ? "open" : "close"),
+    cases: { open, close },
   });
 
   const $status = createStore<boolean>(false)
