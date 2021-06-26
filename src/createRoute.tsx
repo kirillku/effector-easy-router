@@ -17,8 +17,8 @@ export type Route<PathParamKeys extends string = never> = {
   (props: RouteProps<PathParamKeys>): React.ReactElement | null;
   path: string;
   match: Store<Match<PathParamKeys> | null>;
-  open: Event<Match<PathParamKeys> | null>;
-  close: Event<Match<PathParamKeys> | null>;
+  open: Event<Match<PathParamKeys>>;
+  close: Event<null>;
   status: Store<boolean>;
   navigate: Event<void | NavigateOptions<PathParamKeys>>;
 };
