@@ -35,7 +35,13 @@ const UsersPage = () => {
 };
 
 const UserPage = () => {
-  const { name, avatar, email } = useStore($currentUser);
+  const user = useStore($currentUser);
+
+  if (!user) {
+    return null;
+  }
+
+  const { name, avatar, email } = user;
 
   return (
     <>
