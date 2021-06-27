@@ -196,5 +196,3 @@ A store with current `search`.
 ## `$hash: Store<string>`
 
 A store with curernt `hash`
-
-###
