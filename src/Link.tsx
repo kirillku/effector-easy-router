@@ -51,6 +51,7 @@ const LinkInner = <PathParamKeys extends string = never>(
 
     if (shouldNavigate(event, props.target)) {
       event.preventDefault();
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
       // @ts-ignore https://github.com/kirillku/effector-easy-router/issues/1
       Route.navigate(navigateOptions);
     }

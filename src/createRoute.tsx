@@ -6,11 +6,13 @@ import { $location, $pathname, navigateFx } from "./history";
 import { getNavigateFxOptions, matchPath } from "./matchUtils";
 import type { Match, NavigateOptions } from "./types";
 
+type RouteChildrenFunction<PathParamKeys extends string = never> = (
+  match: Match<PathParamKeys>
+) => React.ReactNode;
+
 export type RouteProps<PathParamKeys extends string = never> = {
   exact?: boolean;
-  children?:
-    | React.ReactNode
-    | ((match: Match<PathParamKeys>) => React.ReactNode);
+  children?: React.ReactNode | RouteChildrenFunction<PathParamKeys>;
 };
 
 export type Route<PathParamKeys extends string = never> = {
@@ -25,7 +27,7 @@ export type Route<PathParamKeys extends string = never> = {
 
 export const createRoute = <PathParamKeys extends string = never>(
   path: string
-) => {
+): Route<PathParamKeys> => {
   const $match = $pathname.map((pathname) =>
     matchPath<PathParamKeys>(pathname, path)
   );
@@ -67,7 +69,7 @@ export const createRoute = <PathParamKeys extends string = never>(
       return null;
     }
 
-    return typeof children === "function" ? children(match) : children;
+    return <>{typeof children === "function" ? children(match) : children}</>;
   };
 
   Route.path = path;
@@ -90,8 +92,7 @@ const navigateToCurrentRoute = createEvent<NavigateOptions<never>>();
 sample({
   clock: navigateToCurrentRoute,
   source: $location,
-  fn: (location, options) =>
-    getNavigateFxOptions(location, null, options as NavigateOptions<never>),
+  fn: (location, options) => getNavigateFxOptions(location, null, options),
   target: navigateFx,
 });
 

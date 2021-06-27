@@ -1,6 +1,6 @@
 import * as React from "react";
 import { useStore } from "effector-react";
-import type { Route } from "./createRoute";
+import type { Route, RouteProps } from "./createRoute";
 import { $pathname } from "./history";
 import { matchPath } from "./matchUtils";
 
@@ -25,7 +25,7 @@ export const Switch: React.FC = ({ children }) => {
         return false;
       }
 
-      return child.props.exact ? match.isExact : true;
+      return (child.props as RouteProps)?.exact ? match.isExact : true;
     }) as React.ReactElement) || null
   );
 };

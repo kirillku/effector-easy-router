@@ -13,6 +13,7 @@ export const Redirect = <PathParamKeys extends string = never>({
   ...options
 }: RedirectProps<PathParamKeys>): null => {
   React.useEffect(() => {
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore https://github.com/kirillku/effector-easy-router/issues/1
     Route.navigate({ method, ...options });
   }, []);

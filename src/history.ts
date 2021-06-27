@@ -26,7 +26,7 @@ export const getHref = <PathParamKeys extends string = never>(
   location: Location,
   path: string | null,
   options: NavigateOptions<PathParamKeys> = {}
-) => {
+): string => {
   const navigateFxOptions = getNavigateFxOptions(location, path, options);
 
   return history.createHref(navigateFxOptions);
