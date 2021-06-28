@@ -11,7 +11,7 @@ import { terser } from "rollup-plugin-terser";
 
 import pkg from "./package.json";
 
-const extensions = [".ts", ".tsx", ".json"];
+const extensions = [".mjs", ".js", ".ts", ".tsx", ".json"];
 
 const isProduction = process.env.NODE_ENV === "production";
 
@@ -35,9 +35,7 @@ export default {
   ],
   plugins: [
     alias({
-      entries: {
-        "~": "./src",
-      },
+      entries: { "~": "./src" },
       resolve: extensions,
     }),
     eslint(),
@@ -46,9 +44,7 @@ export default {
       extensions,
       exclude: "node_modules/**",
     }),
-    resolve({
-      extensions,
-    }),
+    resolve({ extensions }),
     isProduction && strip(),
     commonjs(),
     isProduction && terser(),
