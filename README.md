@@ -2,6 +2,8 @@
 
 A declarative router for [`effector`](https://effector.dev/) and [`react`](https://reactjs.org/). It is inspired by [`react-router-dom`](https://reactrouter.com/web) and [effector gates](https://effector.dev/docs/api/effector-react/gate). Routes are independent from each other and do not rely on React tree. Url manipulations are fully abstracted out, you only need to set path when creating a route.
 
+Example: [CodeSandbox](https://codesandbox.io/s/effector-easy-router-xx688)
+
 ```tsx
 const HomeRoute = createRoute("/");
 const UsersRoute = createRoute("/users");
