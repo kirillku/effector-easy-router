@@ -32,6 +32,9 @@ export const getPathname = <PathParamKeys extends string = never>(
   return compile(path)(params);
 };
 
+const addPrefix = (value: string, prefix: string): string =>
+  !value.startsWith(prefix) ? `${prefix}${value}` : value;
+
 export const getNavigateFxOptions = <PathParamKeys extends string = never>(
   location: Location,
   path: string | null,
@@ -45,11 +48,13 @@ export const getNavigateFxOptions = <PathParamKeys extends string = never>(
 
   if (options.search) {
     navigateFxOptions.search =
-      options.search === true ? location.search : options.search;
+      options.search === true
+        ? location.search
+        : addPrefix(options.search, "?");
   }
   if (options.hash) {
     navigateFxOptions.hash =
-      options.hash === true ? location.hash : options.hash;
+      options.hash === true ? location.hash : addPrefix(options.hash, "#");
   }
 
   if (path) {
