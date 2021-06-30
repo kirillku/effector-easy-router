@@ -1,5 +1,6 @@
 import type { Location } from "history";
 import { compile, match } from "path-to-regexp";
+import type { MatchFunction } from "path-to-regexp";
 import type {
   Match,
   NavigateFxOptions,
@@ -7,17 +8,37 @@ import type {
   PathParams,
 } from "./types";
 
+const CACHE_SIZE_LIMIT = 1000;
+const cache = new Map<string, MatchFunction>();
+
+const getMatcher = <PathParamKeys extends string = never>(
+  path: string
+): MatchFunction<PathParams<PathParamKeys>> => {
+  let matcher = cache.get(path);
+
+  if (!matcher) {
+    matcher = match<PathParams<PathParamKeys>>(path, { end: false });
+    if (cache.size > CACHE_SIZE_LIMIT) {
+      cache.clear();
+    }
+    cache.set(path, matcher);
+  }
+
+  return matcher as MatchFunction<PathParams<PathParamKeys>>;
+};
+
 export const matchPath = <PathParamKeys extends string = never>(
   pathname: string,
   path: string
 ): Match<PathParamKeys> | null => {
-  const m = match<PathParams<PathParamKeys>>(path, { end: false })(pathname);
+  const matcher = getMatcher<PathParamKeys>(path);
+  const match = matcher(pathname);
 
-  if (!m) {
+  if (!match) {
     return null;
   }
 
-  const { path: url, params } = m;
+  const { path: url, params } = match;
 
   return {
     params,
