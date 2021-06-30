@@ -32,18 +32,16 @@ export const createRoute = <PathParamKeys extends string = never>(
     matchPath<PathParamKeys>(pathname, path)
   );
 
+  const $status = $match.map((match) => Boolean(match));
+
   const open = createEvent<Match<PathParamKeys>>();
   const close = createEvent<null>();
 
   split<Match<PathParamKeys> | null, "open" | "close">({
-    source: $match,
+    source: sample({ clock: $status, source: $match }),
     match: (match) => (match ? "open" : "close"),
     cases: { open, close },
   });
-
-  const $status = createStore<boolean>(false)
-    .on(open, () => true)
-    .reset(close);
 
   const navigate = createEvent<void | NavigateOptions<PathParamKeys>>();
 
