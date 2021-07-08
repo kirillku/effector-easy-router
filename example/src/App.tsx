@@ -1,46 +1,29 @@
+import * as React from "react";
 import {
   combine,
   createEffect,
   createEvent,
   createStore,
-  forward,
   guard,
   restore,
   sample,
 } from "effector";
 import { useList, useStore } from "effector-react";
-import * as React from "react";
 import {
-  $search,
   createRoute,
-  CurrentRoute,
   Link,
   Switch,
+  $search,
+  CurrentRoute,
 } from "effector-easy-router";
+import { fetchUsers } from "./api";
 
 const HomeRoute = createRoute("/");
 const AboutRoute = createRoute("/about");
 const UsersRoute = createRoute("/users");
 const UserRoute = createRoute<"userSlug">(`${UsersRoute.path}/:userSlug`);
 
-UsersRoute.match.watch((a) => console.log("Users", a));
-UserRoute.match.watch((a) => console.log("User", a));
-
-type User = {
-  id: string;
-  slug: string;
-  name: string;
-  age: number;
-};
-
-const USERS: User[] = [
-  { id: "1", slug: "boris", name: "Boris", age: 5 },
-  { id: "2", slug: "john", name: "John", age: 3 },
-];
-
-const wait = (ms = 1000) => new Promise((resolve) => setTimeout(resolve, ms));
-
-const loadUsersFx = createEffect(() => wait().then(() => USERS));
+const loadUsersFx = createEffect(fetchUsers);
 const $users = restore(loadUsersFx.doneData, []);
 const $status = createStore("idle")
   .on(loadUsersFx, () => "loading")
@@ -48,20 +31,19 @@ const $status = createStore("idle")
   .on(loadUsersFx.fail, () => "error");
 
 guard({
-  clock: UsersRoute.status,
-  source: $status,
-  filter: (status) => status === "idle",
+  source: UsersRoute.open,
+  filter: $status.map((status) => status === "idle"),
   target: loadUsersFx,
 });
 
-const getRandomUserSlug = (users: User[]): string =>
+const getRandomUserSlug = (users) =>
   users[Math.floor(Math.random() * users.length)].slug;
 
 const navigateToRandomUser = createEvent();
 
 guard({
-  source: UserRoute.match,
-  filter: (match) => match?.params?.userSlug === "random",
+  source: UserRoute.open,
+  filter: (match) => match.params.userSlug === "random",
   target: navigateToRandomUser,
 });
 
@@ -121,9 +103,7 @@ const UsersFilters: React.FC = () => {
   const searchParams = new URLSearchParams(search);
 
   const q = searchParams.get("q") || "";
-  const handleChange: React.InputHTMLAttributes<
-    HTMLInputElement
-  >["onChange"] = (event) => {
+  const handleChange = (event) => {
     searchParams.set("q", event.target.value);
     const search = searchParams.toString();
     CurrentRoute.navigate({ search });
@@ -195,9 +175,9 @@ const NotFoundPage: React.FC = () => (
 
 const App: React.FC = () => {
   return (
-    <main className="App">
+    <main style={{ fontFamily: "Helvetica" }}>
       <h1>Effector Easy Router Demo</h1>
-      <nav className="Nav">
+      <nav style={{ display: "flex", gap: 10 }}>
         <Link to={HomeRoute}>Home</Link>
         <Link to={AboutRoute}>About</Link>
         <Link to={UsersRoute}>Users</Link>
