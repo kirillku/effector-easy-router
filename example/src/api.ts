@@ -1,4 +1,11 @@
-const USERS = [
+export type User = {
+  id: string;
+  slug: string;
+  name: string;
+  age: number;
+};
+
+const USERS: User[] = [
   { id: "1", slug: "boris", name: "Boris", age: 5 },
   { id: "2", slug: "john", name: "John", age: 3 },
   { id: "3", slug: "barsik", name: "Barsik", age: 2 },
@@ -7,4 +14,4 @@ const USERS = [
 
 const wait = (ms = 1000) => new Promise((resolve) => setTimeout(resolve, ms));
 
-export const fetchUsers = () => wait().then(() => USERS);
+export const fetchUsers = (): Promise<User[]> => wait().then(() => USERS);

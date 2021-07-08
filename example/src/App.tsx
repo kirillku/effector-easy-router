@@ -16,12 +16,16 @@ import {
   $search,
   CurrentRoute,
 } from "effector-easy-router";
-import { fetchUsers } from "./api";
+import { fetchUsers, User } from "./api";
 
 const HomeRoute = createRoute("/");
 const AboutRoute = createRoute("/about");
 const UsersRoute = createRoute("/users");
 const UserRoute = createRoute<"userSlug">(`${UsersRoute.path}/:userSlug`);
+
+UsersRoute.match.watch((a) => console.log("match", a));
+UsersRoute.open.watch((a) => console.log("open", a));
+UsersRoute.close.watch((a) => console.log("close", a));
 
 const loadUsersFx = createEffect(fetchUsers);
 const $users = restore(loadUsersFx.doneData, []);
@@ -36,7 +40,7 @@ guard({
   target: loadUsersFx,
 });
 
-const getRandomUserSlug = (users) =>
+const getRandomUserSlug = (users: User[]): string =>
   users[Math.floor(Math.random() * users.length)].slug;
 
 const navigateToRandomUser = createEvent();
@@ -103,7 +107,7 @@ const UsersFilters: React.FC = () => {
   const searchParams = new URLSearchParams(search);
 
   const q = searchParams.get("q") || "";
-  const handleChange = (event) => {
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     searchParams.set("q", event.target.value);
     const search = searchParams.toString();
     CurrentRoute.navigate({ search });
