@@ -28,8 +28,10 @@ export type Route<PathParamKeys extends string = never> = {
 export const createRoute = <PathParamKeys extends string = never>(
   path: string
 ): Route<PathParamKeys> => {
-  const $match = $pathname.map((pathname) =>
-    matchPath<PathParamKeys>(pathname, path)
+  const updateMatch = createEvent<Match<PathParamKeys> | null>();
+  const $match = createStore<Match<PathParamKeys> | null>(null).on(
+    updateMatch,
+    (_state, match) => match
   );
 
   const $status = $match.map((match) => Boolean(match));
@@ -76,6 +78,14 @@ export const createRoute = <PathParamKeys extends string = never>(
   Route.close = close;
   Route.status = $status;
   Route.navigate = navigate;
+
+  // Subscribe to pathname updates inside setTimeout to properly handle initial page load.
+  setTimeout(() => {
+    $pathname.watch((pathname) => {
+      const match = matchPath<PathParamKeys>(pathname, path);
+      updateMatch(match);
+    });
+  });
 
   return Route;
 };
