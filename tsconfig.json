@@ -17,13 +17,13 @@
     "declaration": true,
     "declarationDir": "./dist",
     "baseUrl": ".",
-    "rootDirs": ["./src", "./stories"],
+    "rootDirs": ["./src", "./example/src"],
     "outDir": "./dist",
     "typeRoots": ["./node_modules/@types"],
     "paths": {
-      "~/": ["./src/"]
+      "effector-easy-router": ["./src/"]
     }
   },
   "exclude": ["./node_modules", "./dist", "./.storybook"],
-  "include": ["src", "stories"]
+  "include": ["src", "example/src"]
 }

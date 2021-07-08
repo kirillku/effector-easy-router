@@ -10,7 +10,13 @@ import {
 } from "effector";
 import { useList, useStore } from "effector-react";
 import * as React from "react";
-import { $search, createRoute, CurrentRoute, Link, Switch } from "../src";
+import {
+  $search,
+  createRoute,
+  CurrentRoute,
+  Link,
+  Switch,
+} from "effector-easy-router";
 
 const HomeRoute = createRoute("/");
 const AboutRoute = createRoute("/about");

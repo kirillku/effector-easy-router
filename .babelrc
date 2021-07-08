@@ -8,7 +8,7 @@
       {
         "root": ["./"],
         "alias": {
-          "~/": "./src"
+          "effector-easy-router": "./src"
         }
       }
     ]
