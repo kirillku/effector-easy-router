@@ -42,8 +42,9 @@ const $status = createStore("idle")
   .on(loadUsersFx.fail, () => "error");
 
 guard({
-  source: UsersRoute.open,
-  filter: $status.map((status) => status === "idle"),
+  clock: UsersRoute.status,
+  source: $status,
+  filter: (status) => status === "idle",
   target: loadUsersFx,
 });
 
@@ -53,8 +54,8 @@ const getRandomUserSlug = (users: User[]): string =>
 const navigateToRandomUser = createEvent();
 
 guard({
-  source: UserRoute.open,
-  filter: (match) => match.params.userSlug === "random",
+  source: UserRoute.match,
+  filter: (match) => match?.params?.userSlug === "random",
   target: navigateToRandomUser,
 });
 
