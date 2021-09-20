@@ -1,6 +1,6 @@
 {
   "name": "effector-easy-router",
-  "version": "0.0.7",
+  "version": "0.0.8",
   "description": "Easy Router for Effector with React bindings",
   "author": "Kirill Kubryakov <kubryakov@gmail.com>",
   "main": "./dist/common.js",
