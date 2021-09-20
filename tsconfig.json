@@ -25,5 +25,5 @@
     }
   },
   "exclude": ["./node_modules", "./dist", "./.storybook"],
-  "include": ["src", "example/src"]
+  "include": ["src"]
 }
