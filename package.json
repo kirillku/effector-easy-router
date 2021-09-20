@@ -21,8 +21,8 @@
     "path-to-regexp": "^6.2.0"
   },
   "peerDependencies": {
-    "effector": "^21.8.12",
-    "effector-react": "^21.3.2",
+    "effector": "^22.0.0",
+    "effector-react": "^22.0.0",
     "react": "^16.13.1",
     "react-dom": "^16.13.1"
   },
@@ -44,8 +44,8 @@
     "@typescript-eslint/parser": "^4.28.2",
     "babel-loader": "^8.2.2",
     "babel-plugin-module-resolver": "^4.1.0",
-    "effector": "^21.8.12",
-    "effector-react": "^21.3.3",
+    "effector": "^22.1.1",
+    "effector-react": "^22.0.4",
     "eslint": "^7.30.0",
     "eslint-plugin-prettier": "^3.4.0",
     "eslint-plugin-react": "^7.24.0",
