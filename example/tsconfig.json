@@ -1,0 +1,10 @@
+{
+  "extends": "../tsconfig.json",
+  "compilerOptions": {
+    "paths": {
+      "effector-easy-router": ["./src/"]
+    }
+  },
+  "exclude": ["node_modules"],
+  "include": ["./src"]
+}

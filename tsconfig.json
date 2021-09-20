@@ -17,13 +17,9 @@
     "declaration": true,
     "declarationDir": "./dist",
     "baseUrl": ".",
-    "rootDirs": ["./src", "./example/src"],
     "outDir": "./dist",
-    "typeRoots": ["./node_modules/@types"],
-    "paths": {
-      "effector-easy-router": ["./src/"]
-    }
+    "typeRoots": ["./node_modules/@types"]
   },
-  "exclude": ["./node_modules", "./dist", "./.storybook"],
+  "exclude": ["./node_modules", "./dist"],
   "include": ["src"]
 }
