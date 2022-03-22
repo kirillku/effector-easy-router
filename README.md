@@ -2,7 +2,112 @@
 
 A declarative router for [`effector`](https://effector.dev/) and [`react`](https://reactjs.org/). It is inspired by [`react-router-dom`](https://reactrouter.com/web) and [effector gates](https://effector.dev/docs/api/effector-react/gate). Routes are independent from each other and do not rely on React tree. Url manipulations are fully abstracted out, you only need to set path when creating a route.
 
-Example: [CodeSandbox](https://codesandbox.io/s/effector-easy-router-xx688)
+## Basic ideas
+
+### Each route is independent.
+
+Probably still need to have `router` to pass `history` and `domain`, probably will look like this
+
+```tsx
+const router = createRouter({
+  history,
+  domain,
+});
+
+const HomeRoute = router.createRoute("/");
+```
+
+### Url string manipulations are completely hidden by router API
+
+```tsx
+const MyRoute = createRoute("/whatever");
+
+MyRoute.navigate();
+
+<Link to={MyRoute} />;
+```
+
+### Using params from current route
+
+```tsx
+const PlayerRoute = createRoute("/:locale/games/:gameId/players/:playerId");
+
+// current url: /en/games/fortnite/players/ivan
+PlayerRoute.navigate({ playerId: "john" }); // new url: /en/games/fortnite/players/john (no need to provide `locale` and `gameId`)
+PlayerRoute.navigate({ gameId: "gta", playerId: "john" }); // new url: /en/games/gta/players/john
+PlayerRoute.navigate({ locale: "ru", gameId: "gta", playerId: "john" }); // new url: /ru/games/gta/players/john
+PlayerRoute.navigate({ gameId: "gta" }); // new url: /en/games/gta/players/ivan
+
+// current url: /en/something/else
+PlayerRoute.navigate({ gameId: "fortnite", playerId: "ivan" });
+// new url: /en/games/fortnite/players/ivan
+```
+
+### Replacing params but keeping the whole url (not implemented yet)
+
+```tsx
+const LocaleRoute = createRoute("/:locale");
+
+// current url: /en/users/ivan/friends/john
+LocaleRoute.navigate({ locale: "ru" }); // new url: /ru (not what is needed, need to keep url)
+```
+
+Can add an extra param to `Route.navigate`
+
+```tsx
+// current url: /en/users/ivan/friends/john
+LocaleRoute.navigate({ locale: "ru", soft: true }); // new url: /ru/users/ivan/friends/john
+```
+
+Or can use `pathToRegex` functionality (don't like, ideally i would remove it completely)
+
+```tsx
+cosnt LocaleRoute = createRoute('/:locale/(.*)');
+
+// current url: /en/users/ivan/friends/john
+LocaleRoute.navigate({ locale: 'ru' }); // new url: /ru/users/ivan/friends/john
+```
+
+### You can rely on `Route.open` event even when opening the page for a first time.
+
+related issue: https://github.com/kirillku/effector-easy-router/issues/4
+
+### Guards for routes
+
+There should be a way to add guards to rotes. Not clear what could be the API. Currently we can add redirects, but all actions of `Route` will still fire.
+
+Use cases:
+
+- Show 404 if page is completely hidden (url stays the same)
+- Show no access dialog (url stays the same)
+- User is not logged in, show login dialog, ask to login and then show content (url says the same)
+- Redirect to some page
+
+### Search string handling
+
+Not clear if need to handle search strings internally somehow. It will simplify the basic usage, but add a lot of edge cases and complexity. Could be something like this
+
+```tsx
+const MyRoute = createRoute({
+  path: "/users",
+  searchParams: {
+    q: SearchParam.string(""),
+    page: SearchParam.number(1),
+  }
+});
+
+Route.searchParams: Store<{ q: string, page: number }>
+
+// current url: /users
+Route.navigate({ searchParams: { q: "hello" }}); // new url: /users?q=hello
+Route.navigate({ searchParams: { q: "hello", page: 2 }}); // new url: /users?q=hello&page=2
+```
+
+---
+
+## Example
+
+[CodeSandbox](https://codesandbox.io/s/effector-easy-router-xx688)
 
 ```tsx
 const HomeRoute = createRoute("/");
