@@ -62,10 +62,10 @@ LocaleRoute.navigate({ locale: "ru", soft: true }); // new url: /ru/users/ivan/f
 Or can use `pathToRegex` functionality (don't like, ideally i would remove it completely)
 
 ```tsx
-cosnt LocaleRoute = createRoute('/:locale/(.*)');
+cosnt LocaleRoute = createRoute("/:locale/(.*)");
 
 // current url: /en/users/ivan/friends/john
-LocaleRoute.navigate({ locale: 'ru' }); // new url: /ru/users/ivan/friends/john
+LocaleRoute.navigate({ locale: "ru" }); // new url: /ru/users/ivan/friends/john
 ```
 
 ### You can rely on `Route.open` event even when opening the page for a first time.
@@ -75,6 +75,8 @@ related issue: https://github.com/kirillku/effector-easy-router/issues/4
 ### Guards for routes
 
 There should be a way to add guards to rotes. Not clear what could be the API. Currently we can add redirects, but all actions of `Route` will still fire.
+
+related issue: https://github.com/kirillku/effector-easy-router/issues/9
 
 Use cases:
 
